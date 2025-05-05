@@ -1,5 +1,5 @@
 let API_URL = `http://localhost:${PORT}`;
-let PORT = 3000;
+import { getAuthHeaders } from "./utils.js";
 
 document.addEventListener("DOMContentLoaded",()=>{
 
@@ -28,7 +28,7 @@ document.getElementById("login-button").addEventListener("click",async()=>{
     try{
         const res = await fetch(API_URL + "/login",{
             method: "POST",
-            headers:{"Content-Type":"application/json"},
+            headers: getAuthHeaders(),
             body: JSON.stringify({username,password}),
         });
         const data = await res.json();
@@ -51,13 +51,13 @@ document.getElementById("register-button").addEventListener("click",async()=>{
     const confirm = document.getElementById("regitser-confirm-password").value;
     const message = document.getElementById("register-message");
 
-    if(!password===confirm){
+    if(password!==confirm){
         message.textContent = "Passwords do not match";
     }
 
     try{
         const res = await fetch(API_URL + "/register",{
-            method:"POST", "headers":{"Content-Type":"application/json"},
+            method:"POST", headers: getAuthHeaders(),
             body:JSON.stringify({username,password})
         });
         const data = await res.json();

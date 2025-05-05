@@ -2,6 +2,7 @@
 let PORT = 3000;
 let debounceTimer;
 let API_URL=`http://localhost:${PORT}`;
+import { getAuthHeaders } from "./utils";
 
 document.addEventListener("DOMContentLoaded", () => {
     // Elements
@@ -16,12 +17,13 @@ document.addEventListener("DOMContentLoaded", () => {
    
     if (searchInput) {
         searchInput.addEventListener("input", () => {
-            clearTimeout(debounceTimer);
+            clearTimeout(debounceTimer); // cancel previously scheduled call
             const searchText = searchInput.value.trim().toLowerCase();
-            if(searchText)
-            searchBkmrk(searchText);
+            debounceTimer = setTimeout(() => {
+                if (searchText) searchBkmrk(searchText);
+            }, 200); // only search if no typing for 200ms
         });
-    }
+             }
 
     if (addBkmrkBtn) {
         addBkmrkBtn.addEventListener("click", () => {
@@ -57,7 +59,7 @@ async function searchBkmrk(searchText) {
     // logic to filter bookmarks based on search input
     const response = await fetch(API_URL + "/search",{
         method:"POST",
-        headers:{"Content-Type":"application/json"},
+        headers: getAuthHeaders(),
         body:JSON.stringify({searchText})
     });
     const data = await response.json();
@@ -100,10 +102,10 @@ async function dropDownSearchBar(result){
         const newBookmark = document.createElement("div");
         newBookmark.classList.add("dropdown-item");
         newBookmark.innerText = item.title;
-        newBookmark.addEventListener("click",async()=>{
-         //   window.location.href=""; // wire where we should go when we click on any result
-        })
-        dropdown.appendChild(newBookmark); // ❗This line is **missing**
+        // newBookmark.addEventListener("click",async()=>{
+        //     window.location.href=""; // wire where we should go when we click on any result
+        // })
+        dropdown.appendChild(newBookmark); 
 
     });
     dropdown.style.display = "block";
