@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookmark Manager</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">🔖</span>
+                <span>BookMark</span>
+            </div>
+            <div class="search-bar">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="search" placeholder="Search bookmarks...">
+                <div id="dropdown-results" class="dropdown"></div>
+            </div>
+            <nav>
+                <button class="add-btn" id="add-btn">
+                    <span class="add-icon">+</span>
+                    <span>Add Bookmark</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <aside class="sidebar">
+        <h3>Collections</h3>
+        <ul class="sidebar-collections" id="collection-container">
+          <li><a href="#" class="collection-link active"><span class="sidebar-icon">📚</span> All Bookmarks</a></li>
+          <li><a href="#" class="collection-link"><span class="sidebar-icon">⭐</span> Favorites</a></li>
+          <li><a href="#" class="collection-link"><span class="sidebar-icon">📱</span> Mobile Bookmarks</a></li>
+          <li><a href="#" class="collection-link"><span class="sidebar-icon">🕒</span> Recent</a></li>
+        </ul>
+      
+        <h3>Tags</h3>
+        <ul class="sidebar-tags" id="tags-container">
+          <li><a href="#" class="tag-link"><span class="sidebar-icon">💻</span> Development</a></li>
+          <li><a href="#" class="tag-link"><span class="sidebar-icon">📰</span> News</a></li>
+          <li><a href="#" class="tag-link"><span class="sidebar-icon">🎮</span> Entertainment</a></li>
+          <li><a href="#" class="tag-link"><span class="sidebar-icon">🛒</span> Shopping</a></li>
+        </ul>
+      </aside>
+      
+
+    <main>
+        <div class="categories">
+            <div class="category active" id="category">All</div>
+            <div class="category">Development</div>
+            <div class="category">Design</div>
+            <div class="category">News</div>
+            <div class="category">Social Media</div>
+            <div class="category">Entertainment</div>
+            <div class="category">Productivity</div>
+            <div class="category">Shopping</div>
+        </div>
+
+        <div class="bookmarks-container">
+            <div class="bookmark-card">
+                <div class="bookmark-header">
+                    <div class="menu-icon">⋮</div>
+                    <div class="bookmark-favicon">G</div>
+                </div>
+                <div class="bookmark-content">
+                    <h3 class="bookmark-title">Google</h3>
+                    <div class="bookmark-url">https://www.google.com</div>
+                    <div class="bookmark-tags">
+                        <span class="bookmark-tag">Search</span>
+                        <span class="bookmark-tag">Essential</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bookmark-card">
+                <div class="bookmark-header">
+                    <div class="menu-icon">⋮</div>
+                    <div class="bookmark-favicon">Y</div>
+                </div>
+                <div class="bookmark-content">
+                    <h3 class="bookmark-title">YouTube</h3>
+                    <div class="bookmark-url">https://www.youtube.com</div>
+                    <div class="bookmark-tags">
+                        <span class="bookmark-tag">Video</span>
+                        <span class="bookmark-tag">Entertainment</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bookmark-card">
+                <div class="bookmark-header">
+                    <div class="menu-icon">⋮</div>
+                    <div class="bookmark-favicon">G</div>
+                </div>
+                <div class="bookmark-content">
+                    <h3 class="bookmark-title">GitHub</h3>
+                    <div class="bookmark-url">https://github.com</div>
+                    <div class="bookmark-tags">
+                        <span class="bookmark-tag">Development</span>
+                        <span class="bookmark-tag">Code</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bookmark-card">
+                <div class="bookmark-header">
+                    <div class="menu-icon">⋮</div>
+                    <div class="bookmark-favicon">S</div>
+                </div>
+                <div class="bookmark-content">
+                    <h3 class="bookmark-title">Stack Overflow</h3>
+                    <div class="bookmark-url">https://stackoverflow.com</div>
+                    <div class="bookmark-tags">
+                        <span class="bookmark-tag">Development</span>
+                        <span class="bookmark-tag">Help</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bookmark-card">
+                <div class="bookmark-header">
+                    <div class="menu-icon">⋮</div>
+                    <div class="bookmark-favicon">R</div>
+                </div>
+                <div class="bookmark-content">
+                    <h3 class="bookmark-title">Reddit</h3>
+                    <div class="bookmark-url">https://www.reddit.com</div>
+                    <div class="bookmark-tags">
+                        <span class="bookmark-tag">Social</span>
+                        <span class="bookmark-tag">News</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bookmark-card">
+                <div class="bookmark-header">
+                    <div class="menu-icon">⋮</div>
+                    <div class="bookmark-favicon">N</div>
+                </div>
+                <div class="bookmark-content">
+                    <h3 class="bookmark-title">Netflix</h3>
+                    <div class="bookmark-url">https://www.netflix.com</div>
+                    <div class="bookmark-tags">
+                        <span class="bookmark-tag">Entertainment</span>
+                        <span class="bookmark-tag">Streaming</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <button class="sidebar-toggle">☰</button>
+
+    <script>
+        // Toggle sidebar
+        const sidebarToggle = document.querySelector('.sidebar-toggle');
+        const sidebar = document.querySelector('.sidebar');
+        
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            updateToggleButtonPosition();
+        });
+        
+        function updateToggleButtonPosition() {
+            if (sidebar.classList.contains('active')) {
+                sidebarToggle.innerHTML = '←';
+                sidebarToggle.style.left = '250px';
+            } else {
+                sidebarToggle.innerHTML = '☰';
+                sidebarToggle.style.left = '0';
+            }
+        }
+        
+        // Category selection
+        const categories = document.querySelectorAll('.category');
+        
+        categories.forEach(category => {
+            category.addEventListener('click', () => {
+                categories.forEach(c => c.classList.remove('active'));
+                category.classList.add('active');
+            });
+        });
+    </script>
+    <script src="./index.js"></script>
+</body>
+</html>
