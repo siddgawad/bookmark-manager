@@ -1,0 +1,15 @@
+# Node
+node_modules/
+.env
+dist/
+coverage/
+
+# Logs
+*.log
+
+# System
+.DS_Store
+Thumbs.db
+
+# VSCode
+.vscode/
