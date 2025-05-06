@@ -1,8 +1,8 @@
 
 let PORT = 3000;
 let debounceTimer;
-let API_URL=`http://localhost:${PORT}`;
 import { getAuthHeaders } from "./utils";
+
 
 document.addEventListener("DOMContentLoaded", () => {
     // Elements
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function searchBkmrk(searchText) {
     // logic to filter bookmarks based on search input
-    const response = await fetch(API_URL + "/search",{
+    const response = await fetch(process.env.API_URL + "/search",{
         method:"POST",
         headers: getAuthHeaders(),
         body:JSON.stringify({searchText})
@@ -70,6 +70,8 @@ async function searchBkmrk(searchText) {
 
 async function createBkmrk() {
     // logic to open a modal or prompt for new bookmark input
+   
+    modalCreate();
 }
 
 async function handleCollectionClick(e) {
@@ -113,3 +115,79 @@ async function dropDownSearchBar(result){
 
 
 }
+
+
+async function modalCreate(){
+    // Inject modal HTML
+  const modal = document.createElement("div");
+  modal.id = "bookmark-modal";
+  modal.innerHTML = `
+    <div class="modal-content">
+      <form id="bookmark-form">
+        <input type="text" id="title" placeholder="Enter title" required />
+        <input type="url" id="url" placeholder="Enter URL" required />
+        <select id="category-dropdown"></select>
+        <select id="collection-dropdown"></select>
+        <select id="tags-dropdown"></select>
+        <button type="submit">Save</button>
+      </form>
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  // Populate dropdowns
+  await fetchOptions("category", "category-dropdown", "Select category");
+  await fetchOptions("collection", "collection-dropdown", "Select collection");
+  await fetchOptions("tags", "tags-dropdown", "Select tag");
+
+  // Handle form submission
+  document.getElementById("bookmark-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const title = document.getElementById("title").value;
+    const url = document.getElementById("url").value;
+    const category = document.getElementById("category-dropdown").value;
+    const collection = document.getElementById("collection-dropdown").value;
+    const tag = document.getElementById("tags-dropdown").value;
+
+    const res = await fetch("/api/create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title, url, category, collection, tags: [tag] })
+    });
+
+    const data = await res.json();
+    if (!res.ok) return alert(data.message);
+    alert("Bookmark saved!");
+    modal.remove(); // close modal on success
+  });
+}
+
+async function fetchOptions(endpoint, dropdownId, placeholderText) {
+  try {
+    const res = await fetch(`/api/${endpoint}`);
+    const data = await res.json();
+
+    const dropdown = document.getElementById(dropdownId);
+    dropdown.innerHTML = "";
+
+    const placeholder = document.createElement("option");
+    placeholder.textContent = placeholderText;
+    placeholder.disabled = true;
+    placeholder.selected = true;
+    dropdown.appendChild(placeholder);
+
+    data.forEach(item => {
+      const option = document.createElement("option");
+      option.value = item;
+      option.textContent = item;
+      dropdown.appendChild(option);
+    });
+  } catch (err) {
+    console.error(`Error fetching ${endpoint}:`, err);
+  }
+    }
+
+
+
+

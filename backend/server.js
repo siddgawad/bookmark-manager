@@ -13,11 +13,17 @@ mongoose.connect(process.env.MONGO_URI)
 .then(()=>console.log("Connected to MongoDB"))
 .catch(()=>console.error("Mongo DB connection failed",err));
 
-import bookmarkRoutes from "./routes/bookmarkRoutes";
-import loginRoutes from "./routes/loginRoutes";
+import bookmarkRoutes from "./routes/bookmarkRoutes.js";
+import loginRoutes from "./routes/loginRoutes.js";
+import dropDown from "./routes/dropdownData.js"
 
-app.use("/api/auth",loginRoutes);
+app.use("/api/login",loginRoutes);
+app.use("/api/register",loginRoutes);
 app.use("/api/search",bookmarkRoutes);
+app.use("/api/create",bookmarkRoutes);
+app.use("/api/categories",dropDown);
+app.use("/api/collection",dropDown);
+app.use("/api/tags",dropDown);
 
 
 const PORT = process.env.PORT 
