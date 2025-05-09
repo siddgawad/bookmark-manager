@@ -104,17 +104,74 @@ async function dropDownSearchBar(result){
         const newBookmark = document.createElement("div");
         newBookmark.classList.add("dropdown-item");
         newBookmark.innerText = item.title;
-        // newBookmark.addEventListener("click",async()=>{
-        //     window.location.href=""; // wire where we should go when we click on any result
-        // })
+        newBookmark.addEventListener("click",async()=>{
+            newBookmarkRender(item) // wire where we should go when we click on any result
+        });
         dropdown.appendChild(newBookmark); 
 
     });
     dropdown.style.display = "block";
-    
-
-
 }
+
+const newBookmarkRender = async function(item) {
+    // Clear container if needed (optional, based on your UX decision)
+    bkmrkContainer.innerHTML = "";
+
+    // Create outer card
+    const card = document.createElement("div");
+    card.classList.add("bookmark-card");
+
+    // Header with icon and favicon
+    const header = document.createElement("div");
+    header.classList.add("bookmark-header");
+
+    const menuIcon = document.createElement("div");
+    menuIcon.classList.add("menu-icon");
+    menuIcon.textContent = "⋮";
+
+    const favicon = document.createElement("div");
+    favicon.classList.add("bookmark-favicon");
+    favicon.textContent = item.favicon || item.title.charAt(0); // fallback if no favicon
+
+    header.appendChild(menuIcon);
+    header.appendChild(favicon);
+
+    // Content section
+    const content = document.createElement("div");
+    content.classList.add("bookmark-content");
+
+    const title = document.createElement("h3");
+    title.classList.add("bookmark-title");
+    title.textContent = item.title;
+
+    const url = document.createElement("div");
+    url.classList.add("bookmark-url");
+    url.textContent = item.url;
+
+    const tagsContainer = document.createElement("div");
+    tagsContainer.classList.add("bookmark-tags");
+
+    if (item.tags && Array.isArray(item.tags)) {
+        item.tags.forEach(tag => {
+            const tagSpan = document.createElement("span");
+            tagSpan.classList.add("bookmark-tag");
+            tagSpan.textContent = tag;
+            tagsContainer.appendChild(tagSpan);
+        });
+    }
+
+    // Append to content
+    content.appendChild(title);
+    content.appendChild(url);
+    content.appendChild(tagsContainer);
+
+    // Assemble card
+    card.appendChild(header);
+    card.appendChild(content);
+
+    // Append card to container
+    bkmrkContainer.appendChild(card);
+};
 
 
 async function modalCreate(){

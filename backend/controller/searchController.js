@@ -9,7 +9,7 @@ const searchController = async function (req,res){
         const result = await Bookmark.find({
             $or:[ // $or to search across multiple fields
                 {title:{$regex:searchText, $options:"i"}}, // Uses $regex with case-insensitive (i) option for partial matches.
-                {caregory:{$regex:searchText, $options:"i"}},
+                { category: { $regex: searchText, $options: "i" } },
                 {collection:{$regex:searchText,$options:"i"}},
                 {tags:{$regex:searchText,$options:"i"}}
             ]
